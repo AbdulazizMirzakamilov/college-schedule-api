@@ -1,5 +1,5 @@
 using CollegeSchedule.Data;
-//using CollegeSchedule.Middlewares;
+using CollegeSchedule.Middlewares;
 using CollegeSchedule.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,8 +14,7 @@ var connectionString = $"Host={Environment.GetEnvironmentVariable("DB_HOST")};" 
                        $"Username={Environment.GetEnvironmentVariable("DB_USER")};" +
                        $"Password={Environment.GetEnvironmentVariable("DB_PASSWORD")}";
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(connectionString));
+builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
 
 builder.Services.AddScoped<IScheduleService, ScheduleService>();
 
@@ -26,6 +25,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+app.UseMiddleware<ExceptionMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -35,10 +35,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-//app.UseMiddleware<ExceptionMiddleware>();
 app.UseAuthorization();
 app.UseRouting();
-
 app.MapControllers();
-
 app.Run();
