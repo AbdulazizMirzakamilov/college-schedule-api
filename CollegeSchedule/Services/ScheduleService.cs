@@ -132,5 +132,14 @@ namespace CollegeSchedule.Services
                 Lessons = new List<LessonDto>()
             };
         }
+
+        public async Task<List<string>> GetAllGroups()
+        {
+            return await _db.StudentGroups
+                .OrderBy(g => g.GroupName)
+                .Select(g => g.GroupName)
+                .ToListAsync();
+        }
+
     }
 }

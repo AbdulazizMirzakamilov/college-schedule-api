@@ -22,5 +22,12 @@ namespace CollegeSchedule.Controllers
             return Ok(result);
         }
 
+        [HttpGet("groups")]
+        public async Task<IActionResult> GetGroups()
+        {
+            var groups = await _service.GetAllGroups();
+            return Ok(groups);
+        }
+
     }
 }   
